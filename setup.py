@@ -13,6 +13,9 @@ with open('README.rst') as f:
 with open('HISTORY.rst') as f:
     history = f.read()
 
+with open('requirements/base.txt') as f:
+    install_requires = f.read().strip().splitlines()
+
 setup(
     name='djgunicorn',
     version=version,
@@ -23,8 +26,7 @@ setup(
     url='https://github.com/uranusjr/django-gunicorn',
     packages=find_packages(),
     include_package_data=True,
-    install_requires=[
-    ],
+    install_requires=install_requires,
     license='BSD',
     zip_safe=False,
     keywords='django-gunicorn',
