@@ -10,7 +10,7 @@ Quickstart
 
 Install django-gunicorn::
 
-    pip install django-gunicorn
+    pip install djgunicorn
 
 Then add it to your ``INSTALLED_APPS``. You will get a new command
 ``gunserver`` (please forgive my little pun-loving self). This command

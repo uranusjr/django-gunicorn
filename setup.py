@@ -14,7 +14,7 @@ with open('HISTORY.rst') as f:
     history = f.read()
 
 setup(
-    name='django-gunicorn',
+    name='djgunicorn',
     version=version,
     description="""Run Django development server with Gunicorn.""",
     long_description=readme + '\n\n' + history,
