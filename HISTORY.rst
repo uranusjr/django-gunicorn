@@ -1,6 +1,12 @@
 History
 -------
 
+0.1.1 (2016-04-11)
+++++++++++++++++++
+
+* Lazy-load WSGI handler in Gunicorn application to avoid race conditions.
+
+
 0.1.0 (2016-04-11)
 ++++++++++++++++++
 
