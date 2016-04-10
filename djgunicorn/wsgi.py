@@ -12,10 +12,7 @@ class WSGIApplication(BaseWSGIApplication):
 
     def __init__(self, options, handle_static_files):
         self.options = options
-        handler = get_internal_wsgi_application()
-        if handle_static_files:
-            handler = StaticFilesWSGIHandler(handler)
-        self.handler = handler
+        self.handle_static_files = handle_static_files
         super(WSGIApplication, self).__init__()
 
     def load_config(self):
@@ -23,7 +20,10 @@ class WSGIApplication(BaseWSGIApplication):
             self.cfg.set(key, value)
 
     def load(self):
-        return self.handler
+        handler = get_internal_wsgi_application()
+        if self.handle_static_files:
+            handler = StaticFilesWSGIHandler(handler)
+        return handler
 
 
 def run(addr, port, options, ipv6=False, threading=False):
@@ -56,8 +56,8 @@ class StaticFilesWSGIHandler(WSGIHandler):
     """
     def __init__(self, django_handler):
         self.django_handler = django_handler
+        self.static_handler = StaticFilesHandler(django_handler)
         self.base_url = urlparse(settings.STATIC_URL)
-        self.handle = StaticFilesHandler(django_handler)
         super(StaticFilesWSGIHandler, self).__init__()
 
     def __call__(self, environ, start_response):
@@ -71,7 +71,7 @@ class StaticFilesWSGIHandler(WSGIHandler):
             return self.django_handler(environ, start_response)
 
         # Handle static requests.
-        return self.handle(environ, start_response)
+        return self.static_handler(environ, start_response)
 
     def _should_handle(self, path):
         """Checks if the path should be handled. Ignores the path if:
