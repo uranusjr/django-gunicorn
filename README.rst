@@ -37,4 +37,7 @@ Todo
 
 * Unit tests and CI.
 * Check depedency versions.
-
+* Support for additional Gunicorn configs that may be useful. SSL seems to
+  be a common need.
+* Is it possible to conditionally replace the ``runserver`` command? By
+  installing an alternative app config, for example?
