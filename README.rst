@@ -36,12 +36,16 @@ Todo
 ----
 
 * Unit tests and CI.
-* Check depedency versions.
+* Check how low we can support Django and Gunicorn versions.
 * Support for additional Gunicorn configs that may be useful. SSL seems to
   be a common need.
 * Is it possible to conditionally replace the ``runserver`` command? By
   installing an alternative app config, for example?
-* Test reloading (`benoitc/gunicorn#935`_)
+* Output redirection. Currently we always use stderr, but we should respect
+  ``Command.stdout`` and ``Command.stderr``.
+* The startup message is not printed when reloading. It is possible to hook
+  this with Gunicorn server hooks (through a config file), but the problem
+  is how we can pass the correct information into it.
 
 
 Interesting Links
@@ -51,6 +55,3 @@ Interesting Links
 * `Fixed #21978 -- Added optional gunicorn support to runserver. · django/django <https://github.com/django/django/pull/3461/files>`_
 * `dj-static/dj_static.py · kennethreitz/dj-static <https://github.com/kennethreitz/dj-static/blob/485d626/dj_static.py>`_
 * `SSL support for Django-admin runserver‏ <https://groups.google.com/forum/#!topic/django-developers/PgBcSEiUdw0/discussion>`_
-
-
-.. _`benoitc/gunicorn`: https://github.com/benoitc/gunicorn/issues/935
