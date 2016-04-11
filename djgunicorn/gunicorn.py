@@ -19,10 +19,13 @@ class GunicornRunner(object):
         self.stderr = stderr
 
     def build_arguments(self, options):
-        handle_statics = (
-            options['use_static_handler'] and
-            (settings.DEBUG or options['insecure_serving'])
-        )
+        try:
+            handle_statics = (
+                options['use_static_handler'] and
+                (settings.DEBUG or options['insecure_serving'])
+            )
+        except KeyError:
+            handle_statics = False
         app_name = 'static_handler' if handle_statics else 'django_handler'
 
         # Change working directory to where manage.py is.

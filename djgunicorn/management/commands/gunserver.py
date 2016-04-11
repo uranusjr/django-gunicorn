@@ -3,13 +3,23 @@ from __future__ import print_function
 import datetime
 import sys
 
-from django.contrib.staticfiles.management.commands.runserver import (
-    Command as BaseCommand,
-)
+from django.apps import apps
 from django.utils import six
 from django.utils.encoding import get_system_encoding
 
 from djgunicorn.gunicorn import run
+
+
+# Use staticfiles's command by default, but fall back to default if it is
+# not installed.
+if apps.is_installed('django.contrib.staticfiles'):
+    from django.contrib.staticfiles.management.commands.runserver import (
+        Command as BaseCommand,
+    )
+else:
+    from django.core.management.commands.runserver import (
+        Command as BaseCommand,
+    )
 
 
 class Command(BaseCommand):
