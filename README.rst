@@ -55,4 +55,5 @@ Interesting Links
 * `#21978 (Add optional gunicorn support to runserver) <https://code.djangoproject.com/ticket/21978>`_
 * `Fixed #21978 -- Added optional gunicorn support to runserver. · django/django <https://github.com/django/django/pull/3461/files>`_
 * `dj-static/dj_static.py · kennethreitz/dj-static <https://github.com/kennethreitz/dj-static/blob/485d626/dj_static.py>`_
-* `SSL support for Django-admin runserver‏ <https://groups.google.com/forum/#!topic/django-developers/PgBcSEiUdw0/discussion>`_
+* `SSL support for Django-admin runserver <https://groups.google.com/forum/#!topic/django-developers/PgBcSEiUdw0/discussion>`_
+* `Settings — Gunicorn documentation <http://docs.gunicorn.org/en/stable/settings.html>`_
