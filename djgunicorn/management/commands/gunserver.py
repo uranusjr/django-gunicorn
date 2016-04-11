@@ -1,9 +1,11 @@
+from __future__ import print_function
+
 from django.contrib.staticfiles.management.commands.runserver import (
     Command as BaseCommand,
 )
 from django.core.management.commands import runserver
 
-from djgunicorn.wsgi import run
+from djgunicorn.gunicorn import run
 
 
 class Command(BaseCommand):
