@@ -9,12 +9,14 @@ class GunicornRunner(object):
 
     executable = 'gunicorn'
 
-    def __init__(self, addr, port, addr_display, options):
+    def __init__(self, addr, port, addr_display, stdout, stderr, options):
         self.addrport = '{addr_display}:{port}'.format(
             addr_display=addr_display,
             port=int(port),
         )
         self.args = self.build_arguments(options)
+        self.stdout = stdout
+        self.stderr = stderr
 
     def build_arguments(self, options):
         handle_statics = (
@@ -51,15 +53,17 @@ class GunicornRunner(object):
         proc = subprocess.Popen(
             self.args,
             universal_newlines=True,
+            stdout=self.stdout,
+            stderr=self.stderr,
         )
         proc.wait()
 
 
-def run(addr, port, options, addr_display):
+def run(addr, port, options, addr_display, stdout, stderr):
     """Patched runserver internal with Gunicorn.
     """
     runner = GunicornRunner(
         addr=addr, port=port, addr_display=addr_display,
-        options=options,
+        stdout=stdout, stderr=stderr, options=options,
     )
     runner.run()

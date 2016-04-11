@@ -42,8 +42,6 @@ Todo
 * Colourize access logs like ``runserver`` does.
 * Is it possible to conditionally replace the ``runserver`` command? By
   installing an alternative app config, for example?
-* Output redirection. Currently we always use stderr, but we should respect
-  ``Command.stdout`` and ``Command.stderr``.
 
 
 Interesting Links
