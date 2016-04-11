@@ -1,3 +1,9 @@
+"""WSGI config for Gunicorn.
+
+This module is designed not to be imported directly, but provided to be
+loaded by Gunicorn when it is launched.
+"""
+
 from django.conf import settings
 from django.contrib.staticfiles.handlers import StaticFilesHandler
 from django.core.handlers.wsgi import WSGIHandler, get_path_info

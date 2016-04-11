@@ -1,6 +1,6 @@
 """Gunicorn configuration file used by gunserver's Gunicorn subprocess.
 
-This module is designed not to be imported directly, but provided as
+This module is not designed to be imported directly, but provided as
 Gunicorn's configuration file.
 """
 
