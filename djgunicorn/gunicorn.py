@@ -1,4 +1,6 @@
+import os
 import subprocess
+import sys
 
 from django.conf import settings
 
@@ -17,18 +19,25 @@ class GunicornRunner(object):
             (settings.DEBUG or options['insecure_serving'])
         )
         app_name = 'static_handler' if handle_statics else 'django_handler'
+
         addrport = (
             '[{addr}]:{port}' if ipv6
             else '{addr}:{port}'
         ).format(addr=addr, port=int(port))
+
+        # Change working directory to where manage.py is.
+        working_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+
         args = [
             self.executable,
             'djgunicorn.wsgi:' + app_name,
+            '--config', 'python:djgunicorn.config',
             '--bind', addrport,
             '--access-logfile', '-',
             '--access-logformat', '%(t)s "%(r)s" %(s)s %(B)s',
             '--error-logfile', '-',
             '--log-level', 'warning',
+            '--chdir', working_dir,
         ]
         if options['use_reloader']:
             args.append('--reload')
