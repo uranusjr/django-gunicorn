@@ -44,9 +44,6 @@ Todo
   installing an alternative app config, for example?
 * Output redirection. Currently we always use stderr, but we should respect
   ``Command.stdout`` and ``Command.stderr``.
-* The startup message is not printed when reloading. It is possible to hook
-  this with Gunicorn server hooks (through a config file), but the problem
-  is how we can pass the correct information into it.
 
 
 Interesting Links

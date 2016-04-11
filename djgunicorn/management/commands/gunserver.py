@@ -1,26 +1,47 @@
 from __future__ import print_function
 
+import datetime
+import sys
+
 from django.contrib.staticfiles.management.commands.runserver import (
     Command as BaseCommand,
 )
-from django.core.management.commands import runserver
+from django.utils import six
+from django.utils.encoding import get_system_encoding
 
 from djgunicorn.gunicorn import run
 
 
 class Command(BaseCommand):
 
-    def get_handler(self, *args, **options):
-        """HACK: Pass information to Gunicorn.
+    help = "Starts a lightweight Web server for development with Gunicorn."
 
-        We don't use this handler, so it should be OK to reuse this. :p
-        """
-        return options
+    def get_version(self):
+        import djgunicorn
+        return djgunicorn.__version__
 
     def run(self, **options):
-        """Always use inner_run directly. We'll handle autoreload in Gunicorn.
+        """Override runserver's entry point to bring Gunicorn on.
+
+        A large portion of code in this method is copied from
+        `django.core.management.commands.runserver`.
         """
-        # HACK: Monkey-patch the built-in runserver internal to use Gunicorn.
-        old_run, runserver.run = runserver.run, run
-        self.inner_run(None, **options)
-        runserver.run = old_run
+        shutdown_message = options.get('shutdown_message', '')
+
+        self.stdout.write("Performing system checks...\n\n")
+        self.check(display_num_errors=True)
+        self.check_migrations()
+        now = datetime.datetime.now().strftime(r'%B %d, %Y - %X')
+        if six.PY2:
+            now = now.decode(get_system_encoding())
+        self.stdout.write(now)
+
+        addr, port = self.addr, self.port
+        addr_display = '[{}]'.format(addr) if self._raw_ipv6 else addr
+
+        try:
+            run(addr, port, options, addr_display)
+        except KeyboardInterrupt:
+            if shutdown_message:
+                self.stdout.write(shutdown_message)
+            sys.exit(0)
