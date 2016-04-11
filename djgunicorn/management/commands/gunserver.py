@@ -10,10 +10,6 @@ from djgunicorn.gunicorn import run
 
 class Command(BaseCommand):
 
-    def get_version(self):
-        import djgunicorn
-        return djgunicorn.__version__
-
     def get_handler(self, *args, **options):
         """HACK: Pass information to Gunicorn.
 
