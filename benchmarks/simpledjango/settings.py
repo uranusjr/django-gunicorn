@@ -1,4 +1,3 @@
-import logging
 import os
 import sys
 
@@ -15,7 +14,3 @@ INSTALLED_APPS = ['djgunicorn']
 SECRET_KEY = 'm05k7'
 
 TIME_ZONE = 'UTC'
-
-
-# Make the server shut up.
-logging.disable(logging.ERROR)
