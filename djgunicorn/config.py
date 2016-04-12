@@ -13,6 +13,7 @@ import gunicorn
 
 # General configs.
 bind = os.environ['DJANGO_ADDRPORT']
+logger_class = 'djgunicorn.logging.GunicornLogger'
 
 
 def post_worker_init(worker):
