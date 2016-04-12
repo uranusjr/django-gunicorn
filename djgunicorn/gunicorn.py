@@ -47,10 +47,9 @@ class GunicornRunner(object):
         # Pass information into the Gunicorn process through environ.
         # This seems to be how Django's stock runserver do things as well;
         # see `django.core.management.commands.runserver.Command.execute`.
-        os.environ.update({
-            'DJANGO_SETTINGS_MODULE': settings.SETTINGS_MODULE,
-            'DJANGO_ADDRPORT': self.addrport,
-        })
+        if settings.SETTINGS_MODULE:
+            os.environ['DJANGO_SETTINGS_MODULE'] = settings.SETTINGS_MODULE
+        os.environ['DJANGO_ADDRPORT'] = self.addrport
         proc = subprocess.Popen(
             self.args,
             universal_newlines=True,

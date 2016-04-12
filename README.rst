@@ -41,6 +41,10 @@ Todo
   be a common need.
 * Is it possible to conditionally replace the ``runserver`` command? By
   installing an alternative app config, for example?
+* We now use ``DJANGO_SETTINGS_MODULE`` to relay where the settings module is
+  to the Gunicorn subprocess (and let Django loads it automatically). This
+  causes problems if ``settings.configure()`` is called manually without a
+  module, and will likely require some hacks to fix.
 
 
 Interesting Links

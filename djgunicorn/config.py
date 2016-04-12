@@ -29,7 +29,7 @@ def post_worker_init(worker):
         "Quit the server with {quit_command}.\n".format(
             djangover=django.get_version(),
             gunicornver=gunicorn.__version__,
-            settings=os.environ['DJANGO_SETTINGS_MODULE'],
+            settings=os.environ.get('DJANGO_SETTINGS_MODULE'),
             addrport=bind,
             quit_command=quit_command,
         ),

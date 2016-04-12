@@ -5,6 +5,6 @@ loaded by Gunicorn when it is launched.
 """
 
 from django.contrib.staticfiles.handlers import StaticFilesHandler
-from django.core.servers.basehttp import get_internal_wsgi_application
+from .base import application
 
-application = StaticFilesHandler(get_internal_wsgi_application())
+application = StaticFilesHandler(application)
