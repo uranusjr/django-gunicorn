@@ -1,6 +1,18 @@
 History
 -------
 
+0.3.0 (2016-04-13)
+++++++++++++++++++
+
+* Add Gunicorn config changing directory to where ``manage.py`` to avoid
+  problems when ``manage.py`` is run in another directory.
+* Info message is now displayed when Gunicorn reloads, as ``runserver`` does.
+* Enable extended ``runserver`` provided by ``staticfiles`` only if it is
+  installed (which is the default).
+* Gunicorn access logs are now coloured, as ``runserver``'s.
+* Get rid of a custom static handler in favour of Django's stock one.
+
+
 0.2.0 (2016-04-12)
 ++++++++++++++++++
 
