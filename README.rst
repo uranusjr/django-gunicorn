@@ -27,8 +27,9 @@ You can find available options with::
 Most options work as the built-in ``runserver`` command (in
 ``django.contrib.staticfiles``). Exceptions:
 
-* The ``verbosity`` and ``no-color`` settings are *not* passed to Gunicorn.
-  They still affect messages emitted by the command itself, however.
+* The ``verbosity`` setting is *not* passed to Gunicorn. This seems to be the
+  case with ``runserver`` anyway, but I'm not sure. It still affects messages
+  emitted by the command itself.
 * The ``nothreading`` option does not do anything.
 
 
