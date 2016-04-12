@@ -48,10 +48,10 @@ class Command(BaseCommand):
         self.stdout.write(now)
 
         addr, port = self.addr, self.port
-        addr_display = '[{}]'.format(addr) if self._raw_ipv6 else addr
+        addr = '[{}]'.format(addr) if self._raw_ipv6 else addr
 
         try:
-            run(addr, port, options, addr_display)
+            run(addr, port, options)
         except KeyboardInterrupt:
             if shutdown_message:
                 self.stdout.write(shutdown_message)

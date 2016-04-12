@@ -9,12 +9,10 @@ class GunicornRunner(object):
 
     executable = 'gunicorn'
 
-    def __init__(self, addr, port, addr_display, options):
-        self.args = self.build_arguments(
-            addr_display=addr_display, port=port, options=options,
-        )
+    def __init__(self, addr, port, options):
+        self.args = self.build_arguments(addr=addr, port=port, options=options)
 
-    def build_arguments(self, addr_display, port, options):
+    def build_arguments(self, addr, port, options):
         try:
             handle_statics = (
                 options['use_static_handler'] and
@@ -27,15 +25,10 @@ class GunicornRunner(object):
         # Change working directory to where manage.py is.
         working_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
 
-        addrport = addrport = '{addr_display}:{port}'.format(
-            addr_display=addr_display,
-            port=int(port),
-        )
-
         args = [
             self.executable,
             'djgunicorn.wsgi.{module}:application'.format(module=module),
-            '--bind', addrport,
+            '--bind', '{addr}:{port}'.format(addr=addr, port=int(port)),
             '--config', 'python:djgunicorn.config',
             '--access-logfile', '-',
             '--access-logformat', '%(t)s "%(r)s" %(s)s %(B)s',
@@ -57,11 +50,8 @@ class GunicornRunner(object):
         proc.wait()
 
 
-def run(addr, port, options, addr_display):
+def run(addr, port, options):
     """Patched runserver internal with Gunicorn.
     """
-    runner = GunicornRunner(
-        addr=addr, port=port, addr_display=addr_display,
-        options=options,
-    )
+    runner = GunicornRunner(addr=addr, port=port, options=options)
     runner.run()
