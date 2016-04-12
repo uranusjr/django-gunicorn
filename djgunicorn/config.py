@@ -12,7 +12,6 @@ import gunicorn
 
 
 # General configs.
-bind = os.environ['DJANGO_ADDRPORT']
 logger_class = 'djgunicorn.logging.GunicornLogger'
 
 
@@ -30,7 +29,7 @@ def post_worker_init(worker):
             djangover=django.get_version(),
             gunicornver=gunicorn.__version__,
             settings=os.environ.get('DJANGO_SETTINGS_MODULE'),
-            addrport=bind,
+            addrport=worker.cfg.bind[0],
             quit_command=quit_command,
         ),
     )

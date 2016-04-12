@@ -10,13 +10,11 @@ class GunicornRunner(object):
     executable = 'gunicorn'
 
     def __init__(self, addr, port, addr_display, options):
-        self.addrport = '{addr_display}:{port}'.format(
-            addr_display=addr_display,
-            port=int(port),
+        self.args = self.build_arguments(
+            addr_display=addr_display, port=port, options=options,
         )
-        self.args = self.build_arguments(options)
 
-    def build_arguments(self, options):
+    def build_arguments(self, addr_display, port, options):
         try:
             handle_statics = (
                 options['use_static_handler'] and
@@ -29,9 +27,15 @@ class GunicornRunner(object):
         # Change working directory to where manage.py is.
         working_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
 
+        addrport = addrport = '{addr_display}:{port}'.format(
+            addr_display=addr_display,
+            port=int(port),
+        )
+
         args = [
             self.executable,
             'djgunicorn.wsgi.{module}:application'.format(module=module),
+            '--bind', addrport,
             '--config', 'python:djgunicorn.config',
             '--access-logfile', '-',
             '--access-logformat', '%(t)s "%(r)s" %(s)s %(B)s',
@@ -49,11 +53,7 @@ class GunicornRunner(object):
         # see `django.core.management.commands.runserver.Command.execute`.
         if settings.SETTINGS_MODULE:
             os.environ['DJANGO_SETTINGS_MODULE'] = settings.SETTINGS_MODULE
-        os.environ['DJANGO_ADDRPORT'] = self.addrport
-        proc = subprocess.Popen(
-            self.args,
-            universal_newlines=True,
-        )
+        proc = subprocess.Popen(self.args, universal_newlines=True)
         proc.wait()
 
 
