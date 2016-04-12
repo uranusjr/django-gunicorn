@@ -36,10 +36,10 @@ def post_worker_init(worker):
     )
 
 
-def worker_exit(server, worker):
-    """Hook into Gunicorn to display message after existing.
+def worker_int(worker):
+    """Hook into Gunicorn to display message when worker gets an interruption.
 
-    The purpose of this hook is purely cosmetic: we want a newline after the
+    The purpose of this hook is purely cosmetic: we want a newline when the
     worker reloads. This has an unintended side effect to display an extra
     newline after the server quits, but it is relatively unimportant.
     """
