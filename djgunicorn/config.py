@@ -24,12 +24,12 @@ def post_worker_init(worker):
     sys.stdout.write(
         "Django version {djangover}, Gunicorn version {gunicornver}, "
         "using settings {settings!r}\n"
-        "Starting development server at http://{addrport}/\n"
+        "Starting development server at {urls}\n"
         "Quit the server with {quit_command}.\n".format(
             djangover=django.get_version(),
             gunicornver=gunicorn.__version__,
             settings=os.environ.get('DJANGO_SETTINGS_MODULE'),
-            addrport=worker.cfg.bind[0],
+            urls=', '.join('http://{0}/'.format(b) for b in worker.cfg.bind),
             quit_command=quit_command,
         ),
     )
