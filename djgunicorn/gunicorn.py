@@ -24,14 +24,14 @@ class GunicornRunner(object):
             )
         except KeyError:
             handle_statics = False
-        app_name = 'static_handler' if handle_statics else 'django_handler'
+        module = 'staticfiles' if handle_statics else 'base'
 
         # Change working directory to where manage.py is.
         working_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
 
         args = [
             self.executable,
-            'djgunicorn.wsgi:' + app_name,
+            'djgunicorn.wsgi.{module}:application'.format(module=module),
             '--config', 'python:djgunicorn.config',
             '--access-logfile', '-',
             '--access-logformat', '%(t)s "%(r)s" %(s)s %(B)s',
