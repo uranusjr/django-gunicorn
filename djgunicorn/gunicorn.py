@@ -1,4 +1,5 @@
 import os
+import signal
 import subprocess
 import sys
 
@@ -46,8 +47,11 @@ class GunicornRunner(object):
         # see `django.core.management.commands.runserver.Command.execute`.
         if settings.SETTINGS_MODULE:
             os.environ['DJANGO_SETTINGS_MODULE'] = settings.SETTINGS_MODULE
-        proc = subprocess.Popen(self.args, universal_newlines=True)
-        proc.wait()
+        self.proc = subprocess.Popen(self.args, universal_newlines=True)
+        self.proc.wait()
+
+    def shutdown(self):
+        self.proc.send_signal(signal.SIGTERM)   # Graceful shutdown.
 
 
 def run(addr, port, options):
@@ -55,3 +59,4 @@ def run(addr, port, options):
     """
     runner = GunicornRunner(addr=addr, port=port, options=options)
     runner.run()
+    return runner
