@@ -8,7 +8,7 @@ from django.core.management import get_commands
 from django.utils import six
 from django.utils.encoding import get_system_encoding
 
-from djgunicorn.gunicorn import run
+from djgunicorn.gunicorn import GunicornRunner
 
 
 # Use the active runserver command as base. This is generally provided by
@@ -50,9 +50,14 @@ class Command(BaseCommand):
         addr, port = self.addr, self.port
         addr = '[{}]'.format(addr) if self._raw_ipv6 else addr
 
+        runner = GunicornRunner(addr, port, options)
         try:
-            runner = run(addr, port, options)
+            runner.run()
         except KeyboardInterrupt:
+            runner.shutdown()
             if shutdown_message:
                 self.stdout.write(shutdown_message)
             sys.exit(0)
+        except:
+            runner.shutdown()
+            raise

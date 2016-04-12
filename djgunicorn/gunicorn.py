@@ -52,11 +52,3 @@ class GunicornRunner(object):
 
     def shutdown(self):
         self.proc.send_signal(signal.SIGTERM)   # Graceful shutdown.
-
-
-def run(addr, port, options):
-    """Patched runserver internal with Gunicorn.
-    """
-    runner = GunicornRunner(addr=addr, port=port, options=options)
-    runner.run()
-    return runner
